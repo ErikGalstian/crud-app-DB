@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
+const Task = require('./../models/task.model');
 
 // GET Render homepage
 router.get('/', (req, res) => {
@@ -8,13 +10,16 @@ router.get('/', (req, res) => {
 
 // POST - redirect to /edit route
 router.post('/edit', (req, res) => {
-  const text = global.itemList.find(el => el.id === +req.body.id).text; // <--- Find the text with passed id
-  // Setting up the session with item data before redirect
-  req.session.item = {
-    id: +req.body.id,
-    text: text
-  };
-  res.redirect('/edit');
+  let text;
+
+  Task.findOne({ id: +req.body.id }, function(err, docs) {
+    text = docs.text;
+    req.session.item = {
+      id: +req.body.id,
+      text: text
+    };
+    res.redirect('/edit');
+  });
 });
 
 // GET - gets the counter

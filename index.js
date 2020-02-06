@@ -7,6 +7,7 @@ const notFound = require('./routes/notFound');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const todos = require('./routes/api/todos');
+require('./models/db');
 
 // Init express
 const app = express();
