@@ -25,7 +25,10 @@ router.get('/api/todos', (req, res) => {
 
 // PUT - send put request to update todo
 router.put('/api/todos', (req, res) => {
-  Task.update({ id: +req.body.id }, { $set: { text: req.body.text } });
+  Task.findOne({ id: +req.body.id }, function(err, doc) {
+    doc.text = req.body.text;
+    doc.save();
+  });
   console.log(`Updated the document with id: ${req.body.id}`);
   res.send(`Updated the document with id: ${req.body.id}`);
 });
